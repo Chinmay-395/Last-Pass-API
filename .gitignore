@@ -137,4 +137,4 @@ eb-package.zip
 static/
 
 #after working for virtualbox failed for some bizzare reason
-./cns_env
+cns_env/
