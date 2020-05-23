@@ -127,3 +127,6 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 AUTH_USER_MODEL = 'profiles_api.UserProfile'
+''' we can configure our Django project to use this as the default user model 
+    instead of the one that's provided by Django 
+'''
