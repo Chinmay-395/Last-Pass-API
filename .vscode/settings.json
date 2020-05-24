@@ -1,0 +1,42 @@
+{
+    "atomKeymap.promptV3Features": true,
+    "editor.multiCursorModifier": "ctrlCmd",
+    "editor.formatOnPaste": true,
+    "editor.formatOnSave": true,
+    "window.zoomLevel": 0,
+    "editor.fontSize": 18,
+    "workbench.colorTheme": "Atom One Dark",
+    "editor.tokenColorCustomizations": {
+        "textMateRules": [
+            {
+                "scope": "meta.function-call.generic.python",
+                "settings": {
+                    "foreground": "#5ba7ff"
+                }
+            }
+        ]
+    },
+    "workbench.startupEditor": "newUntitledFile",
+    "workbench.iconTheme": "material-icon-theme",
+    "workbench.settings.editor": "json",
+    "workbench.settings.openDefaultSettings": true,
+    "kite.showWelcomeNotificationOnStartup": false,
+    "terminal.integrated.fontSize": 16,
+    "material-icon-theme.showWelcomeMessage": false,
+    "window.openFoldersInNewWindow": "on",
+    "workbench.activityBar.visible": true,
+    "editor.minimap.enabled": true,
+    "python.pythonPath": "C:\\Users\\chinm\\AppData\\Local\\Programs\\Python\\Python38\\python.exe",
+    "python.formatting.autopep8Path": "autopep8",
+    "editor.suggestSelection": "first",
+    "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+    "python.jediEnabled": false,
+    // Command Prompt
+    //"terminal.integrated.shell.windows": "C:\\Windows\\System32\\cmd.exe"
+    // PowerShell
+    //"terminal.integrated.shell.windows": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe"
+    // Git Bash
+    //"terminal.integrated.shell.windows": "C:\\Program Files\\Git\\bin\\bash.exe"
+    // Bash on Ubuntu (on Windows)
+    //"terminal.integrated.shell.windows": "C:\\Windows\\System32\\bash.exe"
+}
