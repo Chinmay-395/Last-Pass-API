@@ -4,7 +4,6 @@ from rest_framework.response import Response
 from rest_framework import status
 from lastpass_api import serializers
 from lastpass_api.cryptoMethods.aes_method import EncryptFunc, DecryptFunc
-# Create your views here.
 
 
 def helloWorld(request):
@@ -15,7 +14,7 @@ def helloWorld(request):
 
 
 class IntroApiView(APIView):
-    serializer_class = serializers.TestingCryptSerializer
+    serializer_class = serializers.UserCryptSerializer
 
     def get(self, request, format=None):
         an_apiview = [
@@ -29,17 +28,40 @@ class IntroApiView(APIView):
     def post(self, request):
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
-            name = serializer.validated_data.get('plainText')
-            x = EncryptFunc(name)
+            serializer.save()
+            ''' I am using a different serializer class
+                Thereby it will give error to run these 
+                following instructions
+            '''
+            text = serializer.validated_data.get('plainText')
+            cryptoAction = serializer.validated_data.get('category')
+            #username = serializer.validated_data.get('ogUser')
+            print(serializer.validated_data.get("ogUser"))
+            createdNewPassword = serializer.validated_data.get(
+                'individualPassword')
+            x = EncryptFunc(text)
             #y = DecryptFunc()
-            message = f'Hello {name}'
+            #name = 'default'
+            message = f'Hello {text}'
             message2 = f"{x}"
-            #message3 = f"{y}"
-            return Response({'message': message,
-                             'encryption': message2,
+            message3 = f"{cryptoAction}"
+            return Response({'plainText': message,
+                             'encrypted Text': message2,
+                             'cryptographic method': message3,
+                             # 'user is': username,
+                             'New password': createdNewPassword,
                              })
         else:
             return Response(
                 serializer.errors,
                 status=status.HTTP_400_BAD_REQUEST
             )
+
+    def put(self, request, pk=None):
+        return Response({'method': 'put'})
+
+    def patch(self, request, pk=None):
+        return Response({'method': 'PATCH'})
+
+    def delete(self, request, pk=None):
+        return Response({'method': 'DELETE'})

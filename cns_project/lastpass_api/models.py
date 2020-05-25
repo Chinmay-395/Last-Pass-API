@@ -4,9 +4,15 @@ from profiles_api.models import UserProfile
 
 
 class PasswordConverter(models.Model):
+    CATEGORY = (
+        ('AES Cryptography', 'AES Cryptography'),
+        ('RSA Cipher', 'RSA Cipher'),
+    )
     ogUser = models.ForeignKey(
         UserProfile, on_delete=models.CASCADE, related_name='ogUser')
-    individualPassword = models.TextField()
+    individualPassword = models.CharField(max_length=225, null=True)
+    plainText = models.CharField(max_length=225, null=True)
+    category = models.CharField(max_length=200, null=True, choices=CATEGORY)
 
     def __str__(self):
-        return self.individualPassword
+        return f'{self.ogUser} -- "has created" --> {self.individualPassword}'
