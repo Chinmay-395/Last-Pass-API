@@ -28,6 +28,7 @@
     "editor.minimap.enabled": true,
     "python.pythonPath": "C:\\Users\\chinm\\AppData\\Local\\Programs\\Python\\Python38\\python.exe",
     "python.formatting.autopep8Path": "autopep8",
+    "editor.formatOnSave": true,
     "editor.suggestSelection": "first",
     "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
     "python.jediEnabled": false,
