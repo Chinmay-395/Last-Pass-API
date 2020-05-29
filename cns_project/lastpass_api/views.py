@@ -3,10 +3,6 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from lastpass_api import serializers
-from lastpass_api.cryptoMethods.aes_method import EncryptFunc, DecryptFunc
-# Importing railFence
-from lastpass_api.cryptoMethods.railFence import calledInfromDjango
-from rest_framework.decorators import api_view
 
 
 def helloWorld(request):
@@ -15,35 +11,6 @@ def helloWorld(request):
     }
     return render(request, 'lastpass_api/index.html', context)
 
-
-""" THE FOLLOWING CODE IS FOR SIMPLE ENCRYPT DECRYPT API """
-
-
-class SimpleApiEncryptDecrypt(APIView):
-    serializer_class = serializers.SimpleEncyptDecryptSerializer
-
-    def get(self, request, format=None):
-        an_apiview = [
-            'This is a simple', 'ENCRYPT DECRYPT API',
-        ]
-        return Response({'message': 'hello!', 'an_apiview': an_apiview})
-
-    def post(self, request):
-        serializer = self.serializer_class(data=request.data)
-        if serializer.is_valid():
-            name = serializer.validated_data.get('text')
-            task_name = serializer.validated_data.get(
-                'encrypt_or_decrypt')
-            method_name = serializer.validated_data.get(
-                'method_choose')
-            """ I will be calling railFence.py script directly for the time being """
-            if method_name == 'Rail Fence':
-                print(calledInfromDjango(task_name, name))
-            message = f'plain-text {name} {task_name} {method_name}'
-            return Response({'message': message})
-        else:
-            return Response(serializer.errors,
-                            status=status.HTTP_400_BAD_REQUEST)
 
 
 """ THE FOLLOWING CODE IS FOR LASTPASS CLONE """

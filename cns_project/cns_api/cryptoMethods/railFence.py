@@ -193,7 +193,7 @@ def main():
         print("Invalid Choice")
 
 
-def calledInfromDjango(choice, text):
+def called_RF_InfromDjango(choice, text, key):
     if choice == 'ENCRYPTION':
         print("---Encryption---")
         ciphered_text = cipher_encryption(text)

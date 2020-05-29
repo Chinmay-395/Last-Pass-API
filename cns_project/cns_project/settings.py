@@ -37,12 +37,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
+    # imported Apps
     'rest_framework',
     'rest_framework.authtoken',
-
+    # Custom Apps
     'lastpass_api',
     'profiles_api',
+    'cns_api',
 
 ]
 

@@ -6,7 +6,11 @@ from profiles_api.models import UserProfile
 class PasswordConverter(models.Model):
     CATEGORY = (
         ('AES Cryptography', 'AES Cryptography'),
-        ('RSA Cipher', 'RSA Cipher'),
+        #('RSA Cipher', 'RSA Cipher'),
+        ('Hill Cipher', 'Hill Cipher'),
+        ('Rail Fence', 'Rail fence'),
+        ('caesar Cipher', 'Ceasar Cipher'),
+        ('Column Transpose Cipher', 'Column Transpose Cipher'),
     )
     ogUser = models.ForeignKey(
         UserProfile, on_delete=models.CASCADE, related_name='ogUser')
