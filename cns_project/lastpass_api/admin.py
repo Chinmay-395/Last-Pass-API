@@ -1,4 +1,4 @@
 from django.contrib import admin
-from .models import PasswordConverter
+from .models import LastPassUserData
 # Register your models here.
-admin.site.register(PasswordConverter)
+admin.site.register(LastPassUserData)

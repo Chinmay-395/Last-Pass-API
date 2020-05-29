@@ -1,8 +1,18 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
-from lastpass_api import serializers
+from rest_framework import (status, viewsets)
+from rest_framework.authentication import TokenAuthentication
+from rest_framework import filters
+from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.settings import api_settings
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
+# from created app
+# from lastpass_api
+from lastpass_api import serializers, models
+from lastpass_api.permissions import UpdateLastPass
+# from profiles_api
+from profiles_api import permissions
 
 
 def helloWorld(request):
@@ -12,48 +22,42 @@ def helloWorld(request):
     return render(request, 'lastpass_api/index.html', context)
 
 
-
 """ THE FOLLOWING CODE IS FOR LASTPASS CLONE """
+#____________The code is DRF way of FBV __________#
 
 
 class LastPassApiView(APIView):
-    serializer_class = serializers.UserCryptSerializer
+
+    serializer_class = serializers.LastPassSerializer
+    permission_classes = (UpdateLastPass,
+                          IsAuthenticated)
 
     def get(self, request, format=None):
         an_apiview = [
-            'Here we will create different intakes of the passwords',
-            'We will also intake the type of cryptographic method the user wants to apply on the password',
-            'is similar to a traditional django view',
-            'Gives you the most control over your applciation logic'
+            'get method'
+            'LastPass API views in DRF-->FBV',
+            'I am using this since it gives me the most control over the applciation logic'
         ]
         return Response({'message': 'hello!', 'an_apiview': an_apiview})
 
     def post(self, request):
+        # if request.user.is_authenticated:
+        #     print(request.user.name)
+        print(request.user.id)
         serializer = self.serializer_class(data=request.data)
+        # serializer.data['ogUser']
+        # serializer.data['ogUser'] = request.user.id
+        # print(request.data)
+        print('User who is authenticated')
+        print(request.user.name)
+        # print(request.user.id)
+
         if serializer.is_valid():
+            # serializer.validated_data['ogUser'] = request.user.id
             serializer.save()
-            ''' I am using a different serializer class
-                Thereby it will give error to run these 
-                following instructions
-            '''
-            text = serializer.validated_data.get('plainText')
-            cryptoAction = serializer.validated_data.get('category')
-            # username = serializer.validated_data.get('ogUser')
-            print(serializer.validated_data.get("ogUser"))
-            createdNewPassword = serializer.validated_data.get(
-                'individualPassword')
-            x = EncryptFunc(text)
-            # y = DecryptFunc()
-            # name = 'default'
-            message = f'Hello {text}'
-            message2 = f"{x}"
-            message3 = f"{cryptoAction}"
-            return Response({'plainText': message,
-                             'encrypted Text': message2,
-                             'cryptographic method': message3,
-                             # 'user is': username,
-                             'New password': createdNewPassword,
-                             })
+            name = serializer.validated_data.get('name_of_website')
+            message = f"Data save for {name} website"
+            return Response({'message': message})
         else:
             return Response(
                 serializer.errors,
@@ -67,7 +71,46 @@ class LastPassApiView(APIView):
         return Response({'method': 'put'})
 
     def patch(self, request, pk=None):
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
         return Response({'method': 'PATCH'})
 
     def delete(self, request, pk=None):
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
         return Response({'method': 'DELETE'})
+#____________The code is DRF way of CBV __________#
+
+
+# class UserLoginApiView(ObtainAuthToken):
+#     """ handle creating user authentication tokens """
+#     renderer_classes = api_settings.DEFAULT_RENDERER_CLASSES
+
+
+class LastPassViewSet(viewsets.ModelViewSet):
+    authentication_classes = (TokenAuthentication,)
+    serializer_class = serializers.LastPassSerializer
+    #queryset = models.LastPassUserData.objects.filter(id=request.user.id)
+    permission_classes = (
+        UpdateLastPass,
+        IsAuthenticated,
+    )
+
+    def get_queryset(self):
+        print(self.request.user.id)
+        queryset = models.LastPassUserData.objects.filter(
+            ogUser=self.request.user.id)
+        return queryset
+
+    def perform_create(self, serializer):
+        """ when all the parameters are set in
+            the serializer this function 
+            attaches our profile_api model with 
+            the LastPassApiModel by taking in
+            kwarg ogUser which holds the <request.user>
+            object and thereby goes starts with 
+            checking authentication <permission_classes>         
+        """
+        serializer.save(ogUser=self.request.user)
