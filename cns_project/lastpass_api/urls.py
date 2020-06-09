@@ -8,6 +8,8 @@ router_lastpass.register(
 urlpatterns = [
     # LastPass_clone API
     path('lp_view/', views.LastPassApiView.as_view()),
+    # path('lp_list/', views.LastPassListView.as_view()),
+    # path('lp_ret/', views.LastPassRetrieveView.as_view()),
     # add routers
     path('', include(router_lastpass.urls))
 

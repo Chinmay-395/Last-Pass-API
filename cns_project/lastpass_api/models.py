@@ -16,3 +16,4 @@ class LastPassUserData(models.Model):
 
     def __str__(self):
         return f'{self.ogUser} -- "has created password for" --> {self.name_of_website}'
+
