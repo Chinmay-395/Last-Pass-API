@@ -13,27 +13,7 @@ from lastpass_api import serializers, models
 from lastpass_api.permissions import UpdateLastPass
 # from profiles_api
 from profiles_api import permissions
-
-
-def helloWorld(request):
-    context = {
-        'object_list': 'quest',
-    }
-    return render(request, 'lastpass_api/index.html', context)
-
-
-# """ TEMPORARY GET AND POST USING GENERIC VIEWS
-# """
-
-
-# class LastPassListView(generics.ListCreateAPIView):
-#     serializer_class = serializers.CommentSerializer
-#     queryset = models.LastPassUserData.objects.all()
-
-
-# class LastPassRetrieveView(generics.RetrieveUpdateAPIView):
-#     serializer_class = serializers.CommentSerializer
-#     queryset = models.LastPassUserData.objects.all()
+from profiles_api.models import UserProfile
 
 
 """ THE FOLLOWING CODE IS FOR LASTPASS CLONE 
@@ -53,6 +33,7 @@ class LastPassViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         print(self.request.user.id)
+        print(self.request.user)
         queryset = models.LastPassUserData.objects.filter(
             ogUser=self.request.user.id)
         return queryset
@@ -69,6 +50,14 @@ class LastPassViewSet(viewsets.ModelViewSet):
         serializer.save(ogUser=self.request.user)
 
 
+class UserNameRetrieveViewSet(viewsets.ModelViewSet):
+    authentication_classes = (TokenAuthentication,)
+    serializer_class = serializers.UserDetailSerializer
+
+    def get_queryset(self):
+        queryset = UserProfile.objects.filter(
+            email=self.request.user.email
+        )
 #____________The code is DRF way of FBV __________#
 
 
@@ -121,3 +110,20 @@ class LastPassApiView(APIView):
         if serializer.is_valid():
             serializer.save()
         return Response({'method': 'DELETE'})
+
+
+class LastpassUsernameApiView(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (UpdateLastPass,
+                          IsAuthenticated)
+
+    def get(self, request, format=None):
+
+        x = str(request.user)
+        print("x is ", x)
+        an_apiview = [
+            'getting username',
+            x
+        ]
+
+        return Response({'message': 'hello!', 'an_apiview': an_apiview})

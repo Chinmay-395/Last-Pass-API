@@ -44,7 +44,7 @@ class CustomForm extends React.Component {
     render() {
         return (
             <div>
-                <Form onFinish={(event) => this.handleFormSubmit(
+                <Form onSubmit={(event) => this.handleFormSubmit(
                     event,
                     this.props.requestType,
                     this.props.passID)}>

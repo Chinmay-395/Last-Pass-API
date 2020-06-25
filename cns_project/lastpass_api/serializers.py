@@ -1,17 +1,11 @@
 from rest_framework import serializers
 from lastpass_api import models
-
-# """ temporary quick fix for the get and post view
-# """
-
-
-# class CommentSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = models.LP_DummyData
-#         fields = '__all__'
+from profiles_api.models import UserProfile
+# from rest_framework.serializers import (ModelSerializer, SerializerMethodField)
 
 
 class LastPassSerializer(serializers.ModelSerializer):
+    # user = SerializerMethodField()
     """ This is for LastPass API 
     """
     class Meta:
@@ -20,3 +14,13 @@ class LastPassSerializer(serializers.ModelSerializer):
                   'username_for_website', 'password_for_website',
                   'notes')
         extra_kwargs = {'ogUser': {'read_only': True}}
+
+
+class UserDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserProfile
+        fields = [
+            'name',
+            'email',
+
+        ]
