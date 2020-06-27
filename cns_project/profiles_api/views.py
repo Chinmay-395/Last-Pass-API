@@ -42,3 +42,16 @@ class UserProfileFeedViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(user_profile=self.request.user)
+
+
+class UserDetailViewSet(viewsets.ModelViewSet):
+    authentication_classes = (TokenAuthentication,)
+    serializer_class = serializers.UserDetailSerializer
+
+    def get_queryset(self):
+        print("userId ", self.request.user.id)
+        print("userName ", self.request.user)
+        # print("userEmail ", self.request.user.email)
+        queryset = models.UserProfile.objects.filter(
+            name=self.request.user)
+        return queryset
