@@ -8,14 +8,16 @@ import { Link } from 'react-router-dom';
 function RenderMenuItem({ item }) {
     return (
         <Card>
-            <CardBody>
-                <CardTitle>{item.name_of_website}</CardTitle>
-                <CardText>
-                    <p>Website Name: {item.name_of_website}</p>
-                    <p>Username:{item.username_for_website}</p>
-                    <p>Owner: {item.username}</p>
-                </CardText>
-            </CardBody>
+            <Link to={`/item/${item.id}`}>
+                <CardBody>
+                    <CardTitle>{item.name_of_website}</CardTitle>
+                    <CardText>
+                        <p>Website Name: {item.name_of_website}</p>
+                        <p>Username:{item.username_for_website}</p>
+                        <p>Owner: {item.username}</p>
+                    </CardText>
+                </CardBody>
+            </Link>
         </Card>
     );
 }
