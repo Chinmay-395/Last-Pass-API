@@ -12,13 +12,6 @@ import { configureStore } from './redux/configureStore'
 
 const store = configureStore();
 
-// *|*|*|*|*|*|*|*|*|*|* Commented imports *|*|*|*|*|*|*|*|*|*|* //
-// import { connect } from 'react-redux'
-// import CustomLayout from './containers/Layout.js'
-// import BaseRouter from './routes.js';
-// const store = configureStore();
-// *|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|* //
-
 
 class App extends Component {
 

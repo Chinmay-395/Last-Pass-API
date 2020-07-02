@@ -6,7 +6,7 @@ const initialState = {
     loading: false
 }
 
-export const auth_reducer = (state = initialState, action) => {
+export const Auth_reducer = (state = initialState, action) => {
     switch (action.type) {
         case actionTypes.AUTH_START:
             return { ...state, token: null, error: null, loading: true }

@@ -1,89 +1,67 @@
-// import React, { Component } from 'react';
-// import { List, Card, Avatar } from 'antd';
-// import { EditOutlined, EllipsisOutlined, SettingOutlined } from '@ant-design/icons';
+import React from 'react';
+import {
+    Card, CardImg, CardImgOverlay,
+    CardTitle, Breadcrumb, BreadcrumbItem, CardBody, CardText
+} from 'reactstrap';
+import { Link } from 'react-router-dom';
 
-// const { Meta } = Card;
+function RenderMenuItem({ item }) {
+    return (
+        <Card>
+            <CardBody>
+                <CardTitle>{item.name_of_website}</CardTitle>
+                <CardText>
+                    <p>Website Name: {item.name_of_website}</p>
+                    <p>Username:{item.username_for_website}</p>
+                    <p>Owner: {item.username}</p>
+                </CardText>
+            </CardBody>
+        </Card>
+    );
+}
 
-
-// const PasswordDatas = (props) => {
-//     return (
-//         <List
-//             grid={{
-//                 gutter: 16,
-//                 xs: 1,
-//                 sm: 2,
-//                 md: 4,
-//                 lg: 4,
-//                 xl: 6,
-//                 xxl: 3,
-//             }}
-//             pagination={{
-//                 onChange: page => {
-//                     console.log("This is the page " + page);
-//                 },
-//                 pageSize: 9,
-//             }}
-//             dataSource={props.data}
-//             renderItem={item => (
-//                 <List.Item>
-//                     {/* <Card title={item.name_of_website}>
-//                         <h4>username:</h4>
-//                     </Card> */}
-//                     <Card
-//                         style={{ width: 300 }}
-//                         cover={
-//                             <img
-//                                 alt="example"
-//                                 /* The image would be static but for now
-//                                    we can use the default one
-//                                 */
-//                                 src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
-//                             />
-//                         }
-//                     /*
-//                       -- The way I am thinking is that it can be used 
-//                       -- when the user clicks on edit the card rotates 
-//                       -- and user can edit those things directly 
-//                     */
-//                     // actions={[
-//                     //     <SettingOutlined key="setting" />,
-//                     //     <EditOutlined key="edit" />,
-//                     //     <EllipsisOutlined key="ellipsis" />,
-//                     // ]}
-//                     >
-//                         <Meta
-//                             // avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
-//                             title={
-//                                 <a href={`/${item.id}`}>
-//                                     {item.name_of_website}
-//                                 </a>
-//                             }
-//                             description="This is the description"
-//                         />
-//                     </Card>
-//                 </List.Item>
-//             )}
-//         />
-//     )
-// }
-
-// export default PasswordDatas
-
-
-//     // <List
-//     //     grid={{
-//     //         gutter: 16,
-//     //         xs: 1,
-//     //         sm: 2,
-//     //         md: 4,
-//     //         lg: 4,
-//     //         xl: 6,
-//     //         xxl: 3,
-//     //     }}
-//     //     dataSource={data}
-//     //     renderItem={item => (
-//     //         <List.Item>
-//     //             <Card title={item.title}>Card content</Card>
-//     //         </List.Item>
-//     //     )}
-//     // />
+const PasswordData = (props) => {
+    const fetchPassData = props.lp_data.map((lp_data) => {
+        return (
+            <div className="col-12 col-md-5 m-1" key={lp_data.id}>
+                <RenderMenuItem item={lp_data} />
+            </div>
+        );
+    });
+    if (props.isLoading) {
+        return (
+            <div className="container">
+                <div className="row">
+                    <h3>Loading</h3>
+                </div>
+            </div>
+        )
+    } else if (props.errMess) {
+        return (
+            <div className="container">
+                <div className="row">
+                    <h4>{props.errMess}</h4>
+                </div>
+            </div>
+        )
+    } else {
+        return (
+            <div className="container">
+                <div className="row">
+                    <Breadcrumb>
+                        <BreadcrumbItem><Link to="/home">Home</Link></BreadcrumbItem>
+                        <BreadcrumbItem active>Menu</BreadcrumbItem>
+                    </Breadcrumb>
+                    <div className="col-12">
+                        <h3>Sites</h3>
+                        <hr />
+                    </div>
+                </div>
+                <div className="row">
+                    {fetchPassData}
+                </div>
+            </div>
+        );
+    }
+}
+export default PasswordData;
