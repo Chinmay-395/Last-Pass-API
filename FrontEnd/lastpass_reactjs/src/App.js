@@ -1,46 +1,39 @@
-//React imports
+//React & Redux imports
 import React, { Component } from 'react';
-import { BrowserRouter as Router } from 'react-router-dom';
-import { connect } from 'react-redux'
+import { BrowserRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
+
 //Ant-Design imports
 import 'antd/dist/antd.css';
 //Custom imports
 import './App.css';
-import CustomLayout from './containers/Layout.js'
-import BaseRouter from './routes.js';
-import * as actions from './store/actions/auth'
+import Main from './components/MainComponent';
+import { configureStore } from './redux/configureStore'
+
+const store = configureStore();
+
+// *|*|*|*|*|*|*|*|*|*|* Commented imports *|*|*|*|*|*|*|*|*|*|* //
+// import { connect } from 'react-redux'
+// import CustomLayout from './containers/Layout.js'
+// import BaseRouter from './routes.js';
+// const store = configureStore();
+// *|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|* //
+
 
 class App extends Component {
 
-  componentDidMount() {
-    this.props.onTryAutoSignup();
-  }
   render() {
     return (
-      <div>
-        <Router>
-          <CustomLayout {...this.props}>
-            <BaseRouter />
-          </CustomLayout>
-        </Router>
-
-      </div >
+      <Provider store={store}>
+        <BrowserRouter>
+          <div className="App">
+            <Main />
+          </div>
+        </BrowserRouter>
+      </Provider>
     );
   }
 }
-
-const mapStateToProps = (state) => {
-  return {
-    isAuthenticated: state.token !== null
-  }
-}
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    onTryAutoSignup: () => dispatch(actions.authCheckState())
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default App;
 
 

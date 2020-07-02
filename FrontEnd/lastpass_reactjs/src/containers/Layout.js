@@ -1,13 +1,12 @@
-//React imports
+//React & Redux imports
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, Switch, Route, Redirect, withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 //Ant design imports
 import { Layout, Menu, Breadcrumb } from 'antd';
 // import { UserOutlined, LaptopOutlined, NotificationOutlined } from '@ant-design/icons';
 import { Input } from 'antd';
-//custom imports
-// const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
 const { Search } = Input;
 
@@ -16,49 +15,22 @@ class CustomLayout extends React.Component {
         return (
             <Layout>
                 <Header className="header">
-                    {/* <div className="logo">
-                         This is where Logo goes 
-                    </div> */}
                     <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['1']}>
-                        {/* 
-                        -- we can also add a property in the above Menu component
-                        -- called ``` defaultOpenKeys={['sub1']} ``` which will
-                        -- by default set the 'Demo-login' but I will wait unitll
-                        -- I finish watching the authentication video lec in 
-                        -- DJ-React by Just-Django
-                        */}
                         <Menu.Item key="1">
                             <Link to="/">Last_Pass_clone</Link>
                         </Menu.Item>
                         <Menu.Item key="2">
                             CNS_API
                         </Menu.Item>
-                        {/* 
-                        -- For the time being API page would same as provided 
-                        -- by django-rest-framework But I will build a
-                        -- frontend for API-page similar to
-                        -- spotify-developer-api 
-                        */}
                         <Menu.Item key="3">About</Menu.Item>
 
-                        <div className="search-bar">
-                            <Search
-                                placeholder="input search text"
-                                enterButton="Search"
-                                size="large"
-                                onSearch={value => console.log(value)}
-                            />
-                        </div>
-
                     </Menu>
-
                 </Header>
                 <Layout>
                     <Sider width={200} className="site-layout-background">
                         <Menu
                             mode="inline"
                             defaultSelectedKeys={['1']}
-                            // defaultOpenKeys={['sub1']}
                             style={{ height: '100%', borderRight: 0 }}
                         >
                             <Menu.Item key="1">All</Menu.Item>
@@ -84,8 +56,9 @@ class CustomLayout extends React.Component {
                             <div style={{
                                 background: '#fff', padding: 24,
                                 minHeight: 280
-                            }}>
-                                {this.props.children}
+                            }} class="content">
+                                {/* {this.props.children} */}
+                                <h3>Hidden Leaf Village</h3>
                             </div>
                         </Content>
                     </Layout>
