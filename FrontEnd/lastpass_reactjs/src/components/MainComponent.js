@@ -46,9 +46,9 @@ class Main extends Component {
         return (
             <div className="App">
                 <Header />
-                <Layout />
+                {/* <Layout /> */}
                 <Switch>
-                    <Route path='/home' component={HomePage} />
+                    <Route path='/home' component={() => <PasswordData lp_data={this.props.lp_data} />} />
                     <Route exact path='/item/:lp_data_Id'
                         component={LpWithId} />
                     <Redirect to="/home" />

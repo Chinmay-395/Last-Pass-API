@@ -53,6 +53,9 @@ class Layout extends Component {
 
                     console.log(response)
                     console.log("The data:", response.data)
+                }).then(response => {
+                    response.json()
+                    console("THe response", response.json)
                 })
                 .then(data => {
                     console.log('Success:', data);

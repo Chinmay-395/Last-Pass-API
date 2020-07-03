@@ -94,35 +94,51 @@ export const authCheckState = () => {
 export const fetchLpData = () => (dispatch) => {
 
     dispatch(lpDataLoading());
-    return fetch('http://127.0.0.1:8000/lastpass_api/feed_clone/', {
-        method: "GET",
-        mode: 'cors',
-        credentials: 'same-origin',
-        headers: {
-            "Authorization": `Token 5b01d4b70a5f82081ba49ce3ed1b6168d8bf1052`,
-            "Content-Type": "application/json"
-        }
-    }).then(response => {
-        console.log("HAlleluya")
-        if (response.ok) {
-            return response;
-        } else {
-            var error = new Error('Error ' + response.status + ': ' + response.statusText);
-            console.log("the error:", error)
-            error.response = response;
-            throw error;
-        }
-    }, error => {
-        var errmess = new Error(error.message);
-        throw errmess;
-    })
-        .then(response => {
-            console.log("The response", response.data)
-            response.json()
+    let getData = async () => {
+        await axios.get('http://127.0.0.1:8000/lastpass_api/feed_clone/', {
+            // method: 'GET', 
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Token 5b01d4b70a5f82081ba49ce3ed1b6168d8bf1052`
+            }
         })
-        .then(lp_data => dispatch(add_lpData(lp_data)))
-        .catch(error => dispatch(lpDataFailed(error.message)))
+            //THis one needs to be achieved
+            .then(response => {
+                console.log("HAlleluya")
+                console.log("HERERERE>>>", response.json())
+                if (response.ok) {
+                    return response;
+                } else {
+                    var error = new Error('Error ' + response.status + ': ' + response.statusText);
+                    console.log("the error:", error)
+                    error.response = response;
+                    throw error;
+                }
+            }, error => {
+                var errmess = new Error(error.message);
+                throw errmess;
+            })
+            .then(response => response.json())
+            .then(data => dispatch(add_lpData(data)))
+            .catch(error => dispatch(lpDataFailed(error.message)))
+    }
+    //THis is working prototype
+    // .then(response => {
+    //     // let data = response.data
 
+    //     console.log(response)
+    //     console.log("The data:", response.data)
+    // }).then(response => {
+    //     response.json()
+    //     console("THe response", response.json)
+    // })
+    // .then(data => {
+    //     console.log('Success:', data);
+    // })
+    // .catch((error) => {
+    //     console.error('Error:', error);
+    // });
+    getData()
 }
 
 export const lpDataLoading = () => {
@@ -139,6 +155,7 @@ export const lpDataFailed = (errMess) => {
 }
 
 export const add_lpData = (lp_data) => {
+    console.log("I ran")
     return {
         type: actionTypes.ADD_PASSDATA,
         payload: lp_data

@@ -23,15 +23,15 @@ function RenderMenuItem({ item }) {
 }
 
 const PasswordData = (props) => {
-    console.log(">>>>>>props ", props.lp_data)
-    const fetchPassData = props.lp_data.map((lp_data) => {
+    console.log(">>>>>>props ", props)
+    const fetchPassData = props.lp_data.lp_data.map((lp_data) => {
         return (
             <div className="col-12 col-md-5 m-1" key={lp_data.id}>
                 <RenderMenuItem item={lp_data} />
             </div>
         );
     });
-    if (props.isLoading) {
+    if (props.lp_data.isLoading) {
         return (
             <div className="container">
                 <div className="row">
@@ -39,7 +39,7 @@ const PasswordData = (props) => {
                 </div>
             </div>
         )
-    } else if (props.errMess) {
+    } else if (props.lp_data.errMess) {
         return (
             <div className="container">
                 <div className="row">
