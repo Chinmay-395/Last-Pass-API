@@ -94,51 +94,51 @@ export const authCheckState = () => {
 export const fetchLpData = () => (dispatch) => {
 
     dispatch(lpDataLoading());
-    /*let getData = async () => {
-        await*/return axios.get('http://127.0.0.1:8000/lastpass_api/feed_clone/', {
-        // method: 'GET', 
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Token 5b01d4b70a5f82081ba49ce3ed1b6168d8bf1052`
-        }
-    })
-        //THis one needs to be achieved
-        // .then(response => {
-        //     if (response.ok) {
-        //         console.log("Took too much time")
-        //         alert(response)
-        //         return response;
-        //     } else {
-        //         var error = new Error('Error ' + response.status + ': ' + response.statusText);
-        //         console.log("the error:", error)
-        //         error.response = response;
-        //         throw error;
-        //     }
-        // }, error => {
-        //     var errmess = new Error(error.message);
-        //     throw errmess;
-        // })
-        .then(response => dispatch(add_lpData(response.data)))
-        .catch(error => setTimeout(dispatch(lpDataFailed(error.message)), 10000))
-}
-//THis is working prototype
-// .then(response => {
-//     // let data = response.data
+    let getData = async () => {
+        await axios.get('http://127.0.0.1:8000/lastpass_api/feed_clone/', {
+            // method: 'GET', 
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Token 5b01d4b70a5f82081ba49ce3ed1b6168d8bf1052`
+            }
+        })
+            //THis one needs to be achieved
+            // .then(response => {
+            //     if (response.ok) {
+            //         console.log("Took too much time")
+            //         alert(response)
+            //         return response;
+            //     } else {
+            //         var error = new Error('Error ' + response.status + ': ' + response.statusText);
+            //         console.log("the error:", error)
+            //         error.response = response;
+            //         throw error;
+            //     }
+            // }, error => {
+            //     var errmess = new Error(error.message);
+            //     throw errmess;
+            // })
+            .then(response => dispatch(add_lpData(response.data)))
+            .catch(error => setTimeout(dispatch(lpDataFailed(error.message)), 10000))
+    }
+    //THis is working prototype
+    // .then(response => {
+    //     // let data = response.data
 
-//     console.log(response)
-//     console.log("The data:", response.data)
-// }).then(response => {
-//     response.json()
-//     console("THe response", response.json)
-// })
-// .then(data => {
-//     console.log('Success:', data);
-// })
-// .catch((error) => {
-//     console.error('Error:', error);
-// });
-// getData()
-// }
+    //     console.log(response)
+    //     console.log("The data:", response.data)
+    // }).then(response => {
+    //     response.json()
+    //     console("THe response", response.json)
+    // })
+    // .then(data => {
+    //     console.log('Success:', data);
+    // })
+    // .catch((error) => {
+    //     console.error('Error:', error);
+    // });
+    getData()
+}
 
 export const lpDataLoading = () => {
     return {
