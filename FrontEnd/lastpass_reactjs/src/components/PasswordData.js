@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-    Card, CardImg, CardImgOverlay,
+    Card, /*CardImg, CardImgOverlay,*/
     CardTitle, Breadcrumb, BreadcrumbItem, CardBody, CardText
 } from 'reactstrap';
 import { Link } from 'react-router-dom';
@@ -23,6 +23,7 @@ function RenderMenuItem({ item }) {
 }
 
 const PasswordData = (props) => {
+    console.log(">>>>>>props ", props.lp_data)
     const fetchPassData = props.lp_data.map((lp_data) => {
         return (
             <div className="col-12 col-md-5 m-1" key={lp_data.id}>

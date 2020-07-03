@@ -92,13 +92,34 @@ export const authCheckState = () => {
 /* lp_dataAction will be the ActionCreators for lp_data_reducer */
 
 export const fetchLpData = () => (dispatch) => {
+
     dispatch(lpDataLoading());
-    axios.get('http://127.0.0.1:8000/lastpass_api/feed_clone/', {
+    return fetch('http://127.0.0.1:8000/lastpass_api/feed_clone/', {
+        method: "GET",
+        mode: 'cors',
+        credentials: 'same-origin',
         headers: {
-            'Authorization': `Token ${localStorage.getItem('token')}`,
-            'Content-Type': 'application/json'
+            "Authorization": `Token 5b01d4b70a5f82081ba49ce3ed1b6168d8bf1052`,
+            "Content-Type": "application/json"
         }
-    }).then(response => response.json())
+    }).then(response => {
+        console.log("HAlleluya")
+        if (response.ok) {
+            return response;
+        } else {
+            var error = new Error('Error ' + response.status + ': ' + response.statusText);
+            console.log("the error:", error)
+            error.response = response;
+            throw error;
+        }
+    }, error => {
+        var errmess = new Error(error.message);
+        throw errmess;
+    })
+        .then(response => {
+            console.log("The response", response.data)
+            response.json()
+        })
         .then(lp_data => dispatch(add_lpData(lp_data)))
         .catch(error => dispatch(lpDataFailed(error.message)))
 
@@ -112,7 +133,7 @@ export const lpDataLoading = () => {
 
 export const lpDataFailed = (errMess) => {
     return {
-        type: actionTypes.PASS_FAILED,
+        type: actionTypes.PASSDATA_FAILED,
         payload: errMess
     }
 }
