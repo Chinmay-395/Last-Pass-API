@@ -29,7 +29,7 @@ class LastPassViewSet(viewsets.ModelViewSet):
         UpdateLastPass,
         IsAuthenticated,
     )
-    search_fields = ['ogUser', ]
+    search_fields = ['ogUser', 'name_of_website']
 
     def get_queryset(self):
         print(self.request.user.id)
@@ -48,5 +48,3 @@ class LastPassViewSet(viewsets.ModelViewSet):
             checking authentication <permission_classes>         
         """
         serializer.save(ogUser=self.request.user)
-
-
