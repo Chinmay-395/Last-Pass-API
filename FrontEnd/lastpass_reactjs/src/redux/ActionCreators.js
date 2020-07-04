@@ -38,6 +38,7 @@ export const logout = () => {
 };
 
 export const authLogin = (username, password) => (dispatch) => {
+    console.log("Authentication is enabled")
     dispatch(authStart());
     axios.post(`http://127.0.0.1:8000/api/login/`, {
         username: username,//actually an email field will go here
@@ -101,26 +102,6 @@ export const fetchLpData = () => (dispatch) => {
                 'Authorization': `Token ${localStorage.getItem('token')}`
             }
         })
-            /*
-                --Here I need to add error handling.
-                --The Reference Code for error handling:-
-                // .then(response => {
-                //     if (response.ok) {
-                //         console.log("Took too much time")
-                //         alert(response)
-                //         return response;
-                //     } else {
-                //         var error = new Error('Error ' + response.status + ': ' + response.statusText);
-                //         console.log("the error:", error)
-                //         error.response = response;
-                //         throw error;
-                //     }
-                // }, error => {
-                //     var errmess = new Error(error.message);
-                //     throw errmess;
-                // })
-            */
-
             .then(response => dispatch(add_lpData(response.data)))
             .catch(error => setTimeout(dispatch(lpDataFailed(error.message)), 10000))
     }

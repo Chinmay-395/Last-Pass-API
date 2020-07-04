@@ -33,12 +33,6 @@ class Main extends Component {
         this.props.fetchLpData();
     }
     render() {
-        // const HomePage = () => {
-        //     return (
-        //         <PasswordData lp_data={this.props.lp_data} />
-        //     )
-        // }
-
         const LpWithId = ({ match }) => {
             return (
                 <LpDetail lp_data={this.props.lp_data.filter((lp_data) =>

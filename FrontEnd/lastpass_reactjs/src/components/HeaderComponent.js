@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {
     Navbar, NavbarBrand, Nav, NavbarToggler, Collapse,
-    NavItem, Jumbotron, Modal, Button, ModalHeader,
+    NavItem, /*Jumbotron,*/  Modal, Button, ModalHeader,
     ModalBody, Form, FormGroup, Label, Input
 } from 'reactstrap';
 import { NavLink } from 'react-router-dom'
@@ -33,8 +33,7 @@ class Header extends Component {
 
     handleLogin(event) {
         this.toggleModal();
-        alert("Username " + this.username.value + " password: " + this.password.value);
-        console.log("USERNAME", this.username.value)
+        console.log("Username " + this.username.value + " password: " + this.password.value)
         this.props.auth(this.username.value, this.password.value)
         event.preventDefault();
     }
@@ -67,12 +66,7 @@ class Header extends Component {
                                     </NavLink>
                                     </NavItem>
                                     :
-                                    // <react.Fragment>Empty</react.Fragment>
-                                    <NavItem>
-                                        <NavLink className="nav-link" to="/aboutus">
-                                            <span className="fa fa-info fa-lg"></span> empty
-                                    </NavLink>
-                                    </NavItem>
+                                    <div></div>
                                 }
                                 <NavItem>
                                     <NavLink className="nav-link" to="/aboutus">
@@ -82,7 +76,7 @@ class Header extends Component {
                             </Nav>
                             <Nav className="ml-auto" navbar>
                                 <NavItem>
-                                    <Button outlined onClick={this.toggleModal}>
+                                    <Button onClick={this.toggleModal}>
                                         <span className="fa fa-sign fa-lg"></span> Login/SignUp
                                     </Button>
                                 </NavItem>
