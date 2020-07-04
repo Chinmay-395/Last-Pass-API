@@ -4,21 +4,25 @@ import { connect } from 'react-redux';
 // import { actions } from 'react-redux-form'
 //custom layout
 //Temporarily close --> import CustomLayout from '../containers/Layout'
-import Header from './Header'
-import Layout from '../containers/Layout'
+import Header from './HeaderComponent'
+// import Layout from '../containers/Layout'
 import PasswordData from './PasswordData'
 import LpDetail from './PassDetailComponent'
-import { fetchLpData } from '../redux/ActionCreators'
+import { fetchLpData, authLogin } from '../redux/ActionCreators'
 
 
 const mapStateToProps = state => {
     return {
-        lp_data: state.lp_data
+        lp_data: state.lp_data,
+        auth: state.auth,
     }
 }
 
 const mapDispatchToProps = dispatch => ({
-    fetchLpData: () => { dispatch(fetchLpData()) }
+    fetchLpData: () => { dispatch(fetchLpData()) },
+    authLogin: (username, password) => {
+        dispatch(authLogin(username, password))
+    }
 })
 
 class Main extends Component {
@@ -29,12 +33,11 @@ class Main extends Component {
         this.props.fetchLpData();
     }
     render() {
-        console.log(">>from main>> ", this.props)
-        const HomePage = () => {
-            return (
-                <PasswordData lp_data={this.props.lp_data} />
-            )
-        }
+        // const HomePage = () => {
+        //     return (
+        //         <PasswordData lp_data={this.props.lp_data} />
+        //     )
+        // }
 
         const LpWithId = ({ match }) => {
             return (
@@ -45,8 +48,7 @@ class Main extends Component {
 
         return (
             <div className="App">
-                <Header />
-                {/* <Layout /> */}
+                <Header auth={this.props.auth} />
                 <Switch>
                     <Route path='/home' component={() => <PasswordData lp_data={this.props.lp_data} />} />
                     <Route exact path='/item/:lp_data_Id'

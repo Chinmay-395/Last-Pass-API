@@ -4,6 +4,7 @@ import {
     CardTitle, Breadcrumb, BreadcrumbItem, CardBody, CardText
 } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import Loading from './LoadingComponent'
 
 function RenderMenuItem({ item }) {
     return (
@@ -12,9 +13,9 @@ function RenderMenuItem({ item }) {
                 <CardBody>
                     <CardTitle>{item.name_of_website}</CardTitle>
                     <CardText>
-                        <p>Website Name: {item.name_of_website}</p>
-                        <p>Username:{item.username_for_website}</p>
-                        <p>Owner: {item.username}</p>
+                        Website Name: {item.name_of_website}
+                        Username:{item.username_for_website}
+                        Owner: {item.username}
                     </CardText>
                 </CardBody>
             </Link>
@@ -36,6 +37,8 @@ const PasswordData = (props) => {
             <div className="container">
                 <div className="row">
                     <h3>Loading</h3>
+                    {console.log("LOADING RAN")}
+                    <Loading />
                 </div>
             </div>
         )
@@ -43,7 +46,7 @@ const PasswordData = (props) => {
         return (
             <div className="container">
                 <div className="row">
-                    <h4>{props.errMess}</h4>
+                    <h4>{props.lp_data.errMess}</h4>
                 </div>
             </div>
         )
@@ -51,11 +54,8 @@ const PasswordData = (props) => {
         return (
             <div className="container">
                 <div className="row">
-                    <Breadcrumb>
-                        <BreadcrumbItem><Link to="/home">Home</Link></BreadcrumbItem>
-                        <BreadcrumbItem active>Menu</BreadcrumbItem>
-                    </Breadcrumb>
                     <div className="col-12">
+                        <br />
                         <h3>Sites</h3>
                         <hr />
                     </div>
