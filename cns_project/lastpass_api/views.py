@@ -34,6 +34,8 @@ class LastPassViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         print(self.request.user.id)
         print(self.request.user)
+        # print("The getObject>>>>", self.get_object())
+        # print("", self.get_serializer_class())
         queryset = models.LastPassUserData.objects.filter(
             ogUser=self.request.user.id)
         return queryset
@@ -48,3 +50,10 @@ class LastPassViewSet(viewsets.ModelViewSet):
             checking authentication <permission_classes>         
         """
         serializer.save(ogUser=self.request.user)
+
+    # def partial_update(self, request, *args, **kwargs):
+    #     instance = models.LastPassUserData.objects.filter(
+    #         ogUser=self.request.user.id)
+    #     ser
+    #     print(instance)
+    #     return super().partial_update(request, *args, **kwargs)

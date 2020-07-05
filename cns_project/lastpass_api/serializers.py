@@ -17,5 +17,5 @@ class LastPassSerializer(serializers.ModelSerializer):
         extra_kwargs = {'ogUser': {'read_only': True}, }
 
     def get_username(self, obj):
-        print(">>>>>>>>>>>>Hello", str(obj.ogUser))
+        # print(">>>>>>>>>>>>Hello", str(obj.ogUser))
         return str(obj.ogUser)

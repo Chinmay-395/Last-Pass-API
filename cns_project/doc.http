@@ -11,3 +11,16 @@ Content-Type: application/json
     "username":"chinmaydali395@gmail.com",
     "password":"test@1234"
 }
+
+###Add another data element
+POST http://127.0.0.1:8000/lastpass_api/feed_clone/ HTTP/1.1
+Content-Type: application/json
+Authorization: Token 5b01d4b70a5f82081ba49ce3ed1b6168d8bf1052
+
+{
+    "name_of_website": "googleHomePage",
+    "url_of_website": "https://github.com/",
+    "username_for_website": "Chinmay-395",
+    "password_for_website": "test",
+    "notes": "learning git actions"
+}

@@ -5,6 +5,8 @@ import {
     ModalBody, Form, FormGroup, Label, Input
 } from 'reactstrap';
 import { NavLink } from 'react-router-dom'
+import { fetchLpData, authLogin, logout,/*authCheckState*/ } from '../redux/ActionCreators'
+
 
 class Header extends Component {
     constructor(props) {
@@ -16,8 +18,15 @@ class Header extends Component {
         this.toggleNav = this.toggleNav.bind(this);
         this.toggleModal = this.toggleModal.bind(this);
         this.handleLogin = this.handleLogin.bind(this);
+        this.handleLogout = this.handleLogout.bind(this);
     }
+    componentDidUpdate() {
+        console.log("rendering header component within main from <componentDidUpdate>")
+    }
+    componentDidMount() {
+        console.log("rendering header component within main from <componentDidMount>")
 
+    }
     toggleNav() {
         // this.setState(prevState)
         this.setState({
@@ -34,11 +43,20 @@ class Header extends Component {
     handleLogin(event) {
         this.toggleModal();
         console.log("Username " + this.username.value + " password: " + this.password.value)
-        this.props.auth(this.username.value, this.password.value)
+        // this.props.auth(this.username.value, this.password.value)
+        this.props.authLogin(this.username.value, this.password.value)
         event.preventDefault();
     }
 
+    handleLogout() {
+        // this.toggleModal();
+        console.log("the logout method ran")
+        this.props.logout();
+    }
     render() {
+        const token = localStorage.getItem('token')
+        console.log("This is regarding checking token", token)
+        console.log("the token from props", this.props.auth.token)
         return (
             <React.Fragment>
                 <Navbar dark expand="md">
@@ -59,20 +77,29 @@ class Header extends Component {
                                         <span className="fa fa-info fa-lg"></span> cns_API
                                     </NavLink>
                                 </NavItem>
-                                {this.props.auth.token !== null ?
-                                    <NavItem>
-                                        <NavLink className="nav-link" to="/aboutus">
-                                            <span className="fa fa-info fa-lg"></span> Authenticated
-                                    </NavLink>
-                                    </NavItem>
-                                    :
-                                    <div></div>
-                                }
                                 <NavItem>
                                     <NavLink className="nav-link" to="/aboutus">
                                         <span className="fa fa-info fa-lg"></span> About us
                                     </NavLink>
                                 </NavItem>
+                                {token !== null ?
+                                    <React.Fragment>
+                                        <NavItem>
+                                            <NavLink className="nav-link" to="/aboutus">
+                                                <span className="fa fa-info fa-lg"></span> {localStorage.getItem('name')}
+                                            </NavLink>
+                                        </NavItem>
+                                        <NavItem>
+                                            <Button onClick={this.handleLogout}>
+                                                <span className="fa fa-sign fa-lg"></span> Logout
+                                            </Button>
+                                        </NavItem>
+                                    </React.Fragment>
+
+                                    :
+                                    <div></div>
+                                }
+
                             </Nav>
                             <Nav className="ml-auto" navbar>
                                 <NavItem>
