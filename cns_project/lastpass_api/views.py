@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import (status, viewsets, generics)
@@ -13,27 +13,7 @@ from lastpass_api import serializers, models
 from lastpass_api.permissions import UpdateLastPass
 # from profiles_api
 from profiles_api import permissions
-
-
-def helloWorld(request):
-    context = {
-        'object_list': 'quest',
-    }
-    return render(request, 'lastpass_api/index.html', context)
-
-
-# """ TEMPORARY GET AND POST USING GENERIC VIEWS
-# """
-
-
-# class LastPassListView(generics.ListCreateAPIView):
-#     serializer_class = serializers.CommentSerializer
-#     queryset = models.LastPassUserData.objects.all()
-
-
-# class LastPassRetrieveView(generics.RetrieveUpdateAPIView):
-#     serializer_class = serializers.CommentSerializer
-#     queryset = models.LastPassUserData.objects.all()
+from profiles_api.models import UserProfile
 
 
 """ THE FOLLOWING CODE IS FOR LASTPASS CLONE 
@@ -49,10 +29,13 @@ class LastPassViewSet(viewsets.ModelViewSet):
         UpdateLastPass,
         IsAuthenticated,
     )
-    search_fields = ['ogUser', ]
+    search_fields = ['ogUser', 'name_of_website']
 
     def get_queryset(self):
         print(self.request.user.id)
+        print(self.request.user)
+        # print("The getObject>>>>", self.get_object())
+        # print("", self.get_serializer_class())
         queryset = models.LastPassUserData.objects.filter(
             ogUser=self.request.user.id)
         return queryset
@@ -68,56 +51,9 @@ class LastPassViewSet(viewsets.ModelViewSet):
         """
         serializer.save(ogUser=self.request.user)
 
-
-#____________The code is DRF way of FBV __________#
-
-
-class LastPassApiView(APIView):
-
-    serializer_class = serializers.LastPassSerializer
-    permission_classes = (UpdateLastPass,
-                          IsAuthenticated)
-
-    def get(self, request, format=None):
-        an_apiview = [
-            'get method'
-            'LastPass API views in DRF-->FBV',
-            'I am using this since it gives me the most control over the applciation logic'
-        ]
-        return Response({'message': 'hello!', 'an_apiview': an_apiview})
-
-    def post(self, request):
-        print(request.user.id)
-        serializer = self.serializer_class(data=request.data)
-        print('User who is authenticated')
-        print(request.user.name)
-
-        if serializer.is_valid():
-            # serializer.validated_data['ogUser'] = request.user.id
-            serializer.save()
-            name = serializer.validated_data.get('name_of_website')
-            message = f"Data save for {name} website"
-            return Response({'message': message})
-        else:
-            return Response(
-                serializer.errors,
-                status=status.HTTP_400_BAD_REQUEST
-            )
-
-    def put(self, request, pk=None):
-        serializer = self.serializer_class(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-        return Response({'method': 'put'})
-
-    def patch(self, request, pk=None):
-        serializer = self.serializer_class(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-        return Response({'method': 'PATCH'})
-
-    def delete(self, request, pk=None):
-        serializer = self.serializer_class(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-        return Response({'method': 'DELETE'})
+    # def partial_update(self, request, *args, **kwargs):
+    #     instance = models.LastPassUserData.objects.filter(
+    #         ogUser=self.request.user.id)
+    #     ser
+    #     print(instance)
+    #     return super().partial_update(request, *args, **kwargs)

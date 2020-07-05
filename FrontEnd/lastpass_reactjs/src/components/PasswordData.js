@@ -1,89 +1,93 @@
-import React, { Component } from 'react';
-import { List, Card, Avatar } from 'antd';
-import { EditOutlined, EllipsisOutlined, SettingOutlined } from '@ant-design/icons';
-
-const { Meta } = Card;
-
-
-const PasswordDatas = (props) => {
+import React from 'react';
+import {
+    Card, /*CardImg, CardImgOverlay,*/
+    CardTitle, CardBody, CardText
+} from 'reactstrap';
+import { Link } from 'react-router-dom';
+// import Loading from './LoadingComponent'
+import { Icon, Spin } from 'antd';
+const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
+function RenderMenuItem({ item }) {
     return (
-        <List
-            grid={{
-                gutter: 16,
-                xs: 1,
-                sm: 2,
-                md: 4,
-                lg: 4,
-                xl: 6,
-                xxl: 3,
-            }}
-            pagination={{
-                onChange: page => {
-                    console.log("This is the page " + page);
-                },
-                pageSize: 9,
-            }}
-            dataSource={props.data}
-            renderItem={item => (
-                <List.Item>
-                    {/* <Card title={item.name_of_website}>
-                        <h4>username:</h4>
-                    </Card> */}
-                    <Card
-                        style={{ width: 300 }}
-                        cover={
-                            <img
-                                alt="example"
-                                /* The image would be static but for now
-                                   we can use the default one
-                                */
-                                src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
-                            />
-                        }
-                    /*
-                      -- The way I am thinking is that it can be used 
-                      -- when the user clicks on edit the card rotates 
-                      -- and user can edit those things directly 
-                    */
-                    // actions={[
-                    //     <SettingOutlined key="setting" />,
-                    //     <EditOutlined key="edit" />,
-                    //     <EllipsisOutlined key="ellipsis" />,
-                    // ]}
-                    >
-                        <Meta
-                            // avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
-                            title={
-                                <a href={`/${item.id}`}>
-                                    {item.name_of_website}
-                                </a>
-                            }
-                            description="This is the description"
-                        />
-                    </Card>
-                </List.Item>
-            )}
-        />
-    )
+        <Card>
+            <Link to={`/item/${item.id}`}>
+                <CardBody>
+                    <CardTitle>{item.name_of_website}</CardTitle>
+                    <CardText>
+                        Website Name: {item.name_of_website}
+                        Username:{item.username_for_website}
+                        Owner: {item.username}
+                    </CardText>
+                </CardBody>
+            </Link>
+        </Card>
+    );
 }
 
-export default PasswordDatas
+const PasswordData = (props) => {
+    if (props.auth.token !== null) {
+        console.log("The props inside the listView", props)
+        const fetchPassData = props.lp_data.lp_data.map((lp_data) => {
+            return (
+                <div className="col-12 col-md-5 m-1" key={lp_data.id}>
+                    <RenderMenuItem item={lp_data} />
+                </div>
+            );
+        });
+        if (props.lp_data.isLoading) {
+            return (
+                <div className="container">
+                    <div className="row">
+                        <h3>Loading</h3>
+                        <Spin indicator={antIcon} />
+                    </div>
+                </div>
+            )
+        } else if (props.lp_data.errMess) {
+            if (props.lp_data.errMess === "Request failed with status code 401") {
+                return (
+                    <div className="container">
+                        <div className="row">
+                            <h4>Authentication required</h4>
+                        </div>
+                    </div >
+                )
+            }
+            else {
+                return (
+                    <div className="container">
+                        <div className="row">
+                            <h4>{props.lp_data.errMess}</h4>
+                        </div>
+                    </div >
+                )
+            }
 
+        } else {
+            return (
+                <div className="container">
+                    <div className="row">
+                        <div className="col-12">
+                            <br />
+                            <h3>Sites</h3>
+                            <hr />
+                        </div>
+                    </div>
+                    <div className="row">
+                        {fetchPassData}
+                    </div>
+                    <br />
+                    <div>
+                        <svg width="3em" height="3em" viewBox="0 0 16 16" className="bi bi-plus-circle-fill" fill="blue" xmlns="http://www.w3.org/2000/svg">
+                            <path fillRule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4a.5.5 0 0 0-1 0v3.5H4a.5.5 0 0 0 0 1h3.5V12a.5.5 0 0 0 1 0V8.5H12a.5.5 0 0 0 0-1H8.5V4z" />
+                        </svg>
+                    </div>
+                </div>
+            );
+        }
+    } else {
+        return (<h4>You have logged out</h4>)
+    }
 
-    // <List
-    //     grid={{
-    //         gutter: 16,
-    //         xs: 1,
-    //         sm: 2,
-    //         md: 4,
-    //         lg: 4,
-    //         xl: 6,
-    //         xxl: 3,
-    //     }}
-    //     dataSource={data}
-    //     renderItem={item => (
-    //         <List.Item>
-    //             <Card title={item.title}>Card content</Card>
-    //         </List.Item>
-    //     )}
-    // />
+}
+export default PasswordData;
