@@ -47,7 +47,6 @@ export const authLogin = (username, password) => (dispatch) => {
         password: password
 
     }).then(response => {
-        console.log(">>>>>>>", response.data)
         const token = response.data.token;
         const name = response.data.name
         const expirationDate = new Date(new Date().getTime() + 3600 * 1000); // 1 hour
@@ -130,18 +129,57 @@ export const createLpData = (name_of_website, url_of_website, username_for_websi
                     "password_for_website": password_for_website,
                     "notes": notes
                 }
-            }).then(response => dispatch(add_lpData(response.data)))
+            }).then(response => console.log("The response", response.data))
+                .then(dispatch(fetchLpData()))
+                .catch(error => dispatch(authFail(error.message)))
         }
         createData()
     }
 
-// export const 
+export const updateLpData = (id, name_of_website, url_of_website, username_for_website,
+    password_for_website, notes) => (dispatch) => {
+        if (id !== null && id !== undefined) {
+            //Initially send a complete request
+            console.log("RAN inside update actionCreator")
+            dispatch(lpDataLoading());
+            let updateData = async () => {
+                await axios.patch(`http://127.0.0.1:8000/lastpass_api/feed_clone/${id}/`, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Token ${localStorage.getItem('token')}`
+                    },
+                    body: {
+                        "name_of_website": name_of_website,
+                        "url_of_website": url_of_website,
+                        "username_for_website": username_for_website,
+                        "password_for_website": password_for_website,
+                        "notes": notes
+                    }
+                }).then(response => {
+                    console.log("The response", response.data)
+                    dispatch(fetchLpData())
+                })
+                    // .then(response=>dispatch(fetchLpData()))
+                    .catch(error => dispatch(authFail(error.message)))
+            }
+            updateData()
+        } else {
+            dispatch(lpDataFailed("_______The data passed was incorrect_______"))
+        }
+
+    }
 
 export const lpDataLoading = () => {
     return {
         type: actionTypes.PASSDATA_LOADING
     }
 }
+// export const update_lpData = (lp_data) => {
+//     return{
+//         type: actionTypes.UPDATE_PASSDATA,
+//         payload: lp_data
+//     }
+// }
 
 export const lpDataFailed = (errMess) => {
     return {
