@@ -25,8 +25,9 @@ function RenderMenuItem({ item }) {
 }
 
 const PasswordData = (props) => {
+    console.log("Props inside PasswordData-Component", props)
     if (props.auth.token !== null) {
-        console.log("The props inside the listView", props)
+        console.log("The props inside PasswordData-Component when authentication is successful", props)
         const fetchPassData = props.lp_data.lp_data.map((lp_data) => {
             return (
                 <div className="col-12 col-md-5 m-1" key={lp_data.id}>

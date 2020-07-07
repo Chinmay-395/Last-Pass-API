@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
+import { authLogin, logout, } from '../redux/ActionCreators'
+import { connect } from 'react-redux';
 import {
     Navbar, NavbarBrand, Nav, NavbarToggler, Collapse,
     NavItem, Jumbotron, Modal, Button, ModalHeader,
-    ModalBody, Form, FormGroup, Label, Input, Card
+    ModalBody, Form, FormGroup, Label, Input, //Card
 } from 'reactstrap';
 import { NavLink } from 'react-router-dom'
 import MainIcon from '../shared/lastpass-icon.svg'
@@ -20,11 +22,10 @@ class Header extends Component {
         this.handleLogout = this.handleLogout.bind(this);
     }
     componentDidUpdate() {
-        console.log("rendering header component within main from <componentDidUpdate>")
+        console.log("<componentDidUpdate> from HeaderComponent", this.props)
     }
     componentDidMount() {
-        console.log("rendering header component within main from <componentDidMount>")
-
+        console.log("<componentDidMount> from HeaderComponent", this.props)
     }
     toggleNav() {
         this.setState({
@@ -56,9 +57,11 @@ class Header extends Component {
                         {/* <NavbarBrand className="mr-auto" href="/">
                             LastPass
                         </NavbarBrand> */}
-                        <NavbarBrand className="mr-auto" href="/">
+                        <NavbarBrand className="mr-auto" href="" to="/home">
+                            {/* <NavLink className="nav-link" to="/home"> */}
                             <img src={MainIcon} height="40" width="41"
                                 alt="LastPass" />
+                            {/* </NavLink> */}
                         </NavbarBrand>
                         <Collapse isOpen={this.state.isNavOpen} navbar>
                             <Nav navbar>
@@ -109,56 +112,9 @@ class Header extends Component {
                     </div>
                 </Jumbotron>
                 <Modal className="modal-lg" isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
-                    <ModalHeader toggle={this.toggleModal} style={{ align: "center" }}><h1>Authentication</h1></ModalHeader>
+                    <ModalHeader toggle={this.toggleModal} style={{ align: "center" }}>Authentication</ModalHeader>
                     <ModalBody>
-                        {/* <div className="page-wrapper bg-gra-01 p-t-180 p-b-100 font-poppins">
-                            <div className="wrapper wrapper--w780">
-                                <div className="card card-3" style={{ width: "100%", display: "table" }}>
-                                    <div className="card-heading" style={{ display: "table-cell", width: "50%", padding: "57px 65px 65px 65px" }}>
-                                        <h6>Login</h6>
-                                        <Form onSubmit={this.handleLogin}>
-                                            <FormGroup>
-                                                <Label htmlFor="username">Email</Label>
-                                                <Input type="text" id="username" name="username"
-                                                    innerRef={(input) => this.username = input} />
-                                            </FormGroup>
-                                            <FormGroup>
-                                                <Label htmlFor="password">password</Label>
-                                                <Input type="password" id="password" name="password"
-                                                    innerRef={(input) => this.password = input} />
-                                            </FormGroup>
-                                            <Button type="Submit" value="submit" color="primary">
-                                                Login
-                                            </Button>
-                                        </Form>
-                                    </div>
-                                    <div className="card-body" style={{ padding: "57px 65px 65px 65px" }}>
-                                        <h6>SignUp</h6>
-                                        <Form >
-                                            <FormGroup>
-                                                <Label htmlFor="name">name</Label>
-                                                <Input type="text" id="name" name="name"
-                                                    innerRef={(input) => this.name = input} />
-                                            </FormGroup>
-                                            <FormGroup>
-                                                <Label htmlFor="username">Email</Label>
-                                                <Input type="text" id="username" name="username"
-                                                    innerRef={(input) => this.username = input} />
-                                            </FormGroup>
-                                            <FormGroup>
-                                                <Label htmlFor="password">password</Label>
-                                                <Input type="password" id="password" name="password"
-                                                    innerRef={(input) => this.password = input} />
-                                            </FormGroup>
-                                            <Button type="Submit" value="submit" color="primary">
-                                                SignUp
-                                            </Button>
-                                        </Form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> */}
-
+                        {/*+++++++ If you want to add SignUp_Login modal add below +++++++ */}
                         <Form onSubmit={this.handleLogin}>
                             <FormGroup>
                                 <Label htmlFor="username">Email</Label>
@@ -181,4 +137,25 @@ class Header extends Component {
     }
 }
 
-export default Header;
+const mapStateToProps = state => {
+    return {
+        lp_data: state.lp_data,
+        auth: state.auth,
+    }
+}
+
+const mapDispatchToProps = dispatch => ({
+    // updateLpData: (id, name_of_website, url_of_website, username_for_website,
+    //     password_for_website, notes) => {
+    //     dispatch(updateLpData(id, name_of_website, url_of_website, username_for_website,
+    //         password_for_website, notes))
+    // },
+    // fetchLpData: () => { dispatch(fetchLpData()) },
+    authLogin: (username, password) => {
+        dispatch(authLogin(username, password))
+    },
+    logout: () => { dispatch(logout()) }
+
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

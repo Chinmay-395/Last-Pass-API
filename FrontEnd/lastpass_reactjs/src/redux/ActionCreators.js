@@ -99,8 +99,10 @@ export const authCheckState = () => {
 
 /* lp_dataAction will be the ActionCreators for lp_data_reducer */
 
+//fetch all the data
 export const fetchLpData = () => (dispatch) => {
     dispatch(lpDataLoading());
+    console.log("<<<<<<<<< FETCH METHOD RAN >>>>>>>>")
     let getData = async () => {
         await axios.get('http://127.0.0.1:8000/lastpass_api/feed_clone/', {
             headers: {
@@ -114,6 +116,7 @@ export const fetchLpData = () => (dispatch) => {
     getData()
 }
 
+//Create operation
 export const createLpData = (name_of_website, url_of_website, username_for_website,
     password_for_website, notes) => (dispatch) => {
         let createData = async () => {
@@ -131,38 +134,42 @@ export const createLpData = (name_of_website, url_of_website, username_for_websi
                 }
             }).then(response => console.log("The response", response.data))
                 .then(dispatch(fetchLpData()))
-                .catch(error => dispatch(authFail(error.message)))
+                .catch(error => dispatch(lpDataFailed(error.message)))
         }
         createData()
     }
-
+//Update operation
 export const updateLpData = (id, name_of_website, url_of_website, username_for_website,
     password_for_website, notes) => (dispatch) => {
+        console.log("The data that came in", id, name_of_website, url_of_website, username_for_website,
+            password_for_website, notes)
         if (id !== null && id !== undefined) {
-            //Initially send a complete request
-            console.log("RAN inside update actionCreator")
             dispatch(lpDataLoading());
+            console.log("RAN inside update actionCreator")
+            console.log("the token", localStorage.getItem('token'))
             let updateData = async () => {
                 await axios.patch(`http://127.0.0.1:8000/lastpass_api/feed_clone/${id}/`, {
                     headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Token ${localStorage.getItem('token')}`
+                        // 'Content-Type': 'application/json',
+                        // 'Authorization': `Token ${localStorage.getItem('token')}`
+                        "Content-Type": "application/json",
+                        "Authorization": "Token 5b01d4b70a5f82081ba49ce3ed1b6168d8bf1052"
                     },
                     body: {
-                        "name_of_website": name_of_website,
-                        "url_of_website": url_of_website,
-                        "username_for_website": username_for_website,
-                        "password_for_website": password_for_website,
-                        "notes": notes
+                        "name_of_website": "Naruto",
+                        "url_of_website": "https://alligator.io/react/axios-react/",
+                        "username_for_website": "test",
+                        "password_for_website": "master",
+                        "notes": "notes"
                     }
                 }).then(response => {
-                    console.log("The response", response.data)
-                    dispatch(fetchLpData())
+                    console.log("The response ------->", response)
+                }).catch(error => {
+                    dispatch(lpDataFailed(error.message))
                 })
-                    // .then(response=>dispatch(fetchLpData()))
-                    .catch(error => dispatch(authFail(error.message)))
             }
             updateData()
+            setTimeout(function () { alert("check the status at server") }, 5000)
         } else {
             dispatch(lpDataFailed("_______The data passed was incorrect_______"))
         }
@@ -174,12 +181,6 @@ export const lpDataLoading = () => {
         type: actionTypes.PASSDATA_LOADING
     }
 }
-// export const update_lpData = (lp_data) => {
-//     return{
-//         type: actionTypes.UPDATE_PASSDATA,
-//         payload: lp_data
-//     }
-// }
 
 export const lpDataFailed = (errMess) => {
     return {

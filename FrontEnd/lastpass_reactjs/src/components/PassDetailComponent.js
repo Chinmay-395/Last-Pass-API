@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux';
+import { updateLpData } from '../redux/ActionCreators'
 import {
     Card, CardTitle, /*CardImg, CardImgOverlay,
-     Breadcrumb, BreadcrumbItem,*/ CardBody, CardText,
+     Breadcrumb, BreadcrumbItem, 
     Navbar, NavbarBrand, Nav, NavbarToggler, Collapse,
-    NavItem, Jumbotron, Modal, Button, ModalHeader,
+    NavItem, Jumbotron,*/ CardBody, CardText,Modal, Button, ModalHeader,
     ModalBody, Form, FormGroup, Label, Input
 } from 'reactstrap';
 function RenderLpItem({ x, item }) {
@@ -68,7 +70,7 @@ class LpDetail extends Component {
         // const check_var = this.url_of_website.value
         console.log("ID is----->",this.props.lp_data.id)
         // ----|----- Dispatch the update method from the MainComponent and call it bellow ----|-----
-        this.props.update(this.props.lp_data.id, this.name_of_website.value, this.url_of_website.value,
+        this.props.updateLpData(this.props.lp_data.id, this.name_of_website.value, this.url_of_website.value,
             this.username_for_website.value,this.password_for_website.value,this.notes.value)
     }
     render() {
@@ -132,4 +134,19 @@ class LpDetail extends Component {
         
     }
 }
-export default LpDetail
+const mapStateToProps = state => {
+    return {
+        // lp_data: state.lp_data,
+        auth: state.auth,
+    }
+}
+
+const mapDispatchToProps = dispatch => ({
+    updateLpData: (id, name_of_website, url_of_website, username_for_website,
+        password_for_website, notes) => {
+        dispatch(updateLpData(id, name_of_website, url_of_website, username_for_website,
+            password_for_website, notes))
+    }
+
+})
+export default connect(mapStateToProps, mapDispatchToProps)(LpDetail);
