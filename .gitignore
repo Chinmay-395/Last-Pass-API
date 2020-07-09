@@ -138,3 +138,5 @@ static/
 
 #after working for virtualbox failed for some bizzare reason
 cns_env/
+
+.vscode

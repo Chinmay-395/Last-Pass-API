@@ -120,20 +120,22 @@ export const fetchLpData = () => (dispatch) => {
 export const createLpData = (name_of_website, url_of_website, username_for_website,
     password_for_website, notes) => (dispatch) => {
         let createData = async () => {
-            await axios.post('http://127.0.0.1:8000/lastpass_api/feed_clone/', {
+            let the_data = {
+                "name_of_website": name_of_website,
+                "url_of_website": url_of_website,
+                "username_for_website": username_for_website,
+                "password_for_website": password_for_website,
+                "notes": notes
+            }
+            await axios.post('http://127.0.0.1:8000/lastpass_api/feed_clone/', the_data, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Token ${localStorage.getItem('token')}`
-                },
-                body: {
-                    "name_of_website": name_of_website,
-                    "url_of_website": url_of_website,
-                    "username_for_website": username_for_website,
-                    "password_for_website": password_for_website,
-                    "notes": notes
                 }
-            }).then(response => console.log("The response", response.data))
-                .then(dispatch(fetchLpData()))
+            }).then(response => {
+                console.log("The response", response.data)
+                dispatch(fetchLpData())
+            })// .then(dispatch(fetchLpData()))
                 .catch(error => dispatch(lpDataFailed(error.message)))
         }
         createData()
@@ -147,23 +149,22 @@ export const updateLpData = (id, name_of_website, url_of_website, username_for_w
             dispatch(lpDataLoading());
             console.log("RAN inside update actionCreator")
             console.log("the token", localStorage.getItem('token'))
+            let the_data = {
+                "name_of_website": name_of_website,
+                "url_of_website": url_of_website,
+                "username_for_website": username_for_website,
+                "password_for_website": password_for_website,
+                "notes": notes
+            }
             let updateData = async () => {
-                await axios.patch(`http://127.0.0.1:8000/lastpass_api/feed_clone/${id}/`, {
+                await axios.patch(`http://127.0.0.1:8000/lastpass_api/feed_clone/${id}/`, the_data, {
                     headers: {
-                        // 'Content-Type': 'application/json',
-                        // 'Authorization': `Token ${localStorage.getItem('token')}`
-                        "Content-Type": "application/json",
-                        "Authorization": "Token 5b01d4b70a5f82081ba49ce3ed1b6168d8bf1052"
-                    },
-                    body: {
-                        "name_of_website": "Naruto",
-                        "url_of_website": "https://alligator.io/react/axios-react/",
-                        "username_for_website": "test",
-                        "password_for_website": "master",
-                        "notes": "notes"
+                        'Content-Type': 'application/json',
+                        'Authorization': `Token ${localStorage.getItem('token')}`
                     }
                 }).then(response => {
                     console.log("The response ------->", response)
+                    dispatch(fetchLpData())
                 }).catch(error => {
                     dispatch(lpDataFailed(error.message))
                 })
@@ -175,6 +176,23 @@ export const updateLpData = (id, name_of_website, url_of_website, username_for_w
         }
 
     }
+
+//Delete operation
+export const deleteLpData = (id) => (dispatch) => {
+    dispatch(lpDataLoading())
+    let deleteData = async () => await axios.delete(`http://127.0.0.1:8000/lastpass_api/feed_clone/${id}/`, {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Token ${localStorage.getItem('token')}`
+        }
+    }).then(response => {
+        console.log("The response ------->", response)
+        dispatch(fetchLpData())
+    }).catch(error => {
+        dispatch(lpDataFailed(error.message))
+    })
+    deleteData()
+}
 
 export const lpDataLoading = () => {
     return {
