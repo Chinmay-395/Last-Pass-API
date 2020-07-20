@@ -1,0 +1,45 @@
+<div className="page-wrapper bg-gra-01 p-t-180 p-b-100 font-poppins">
+    <div className="wrapper wrapper--w780">
+        <div className="card card-3" style={{ width: "100%", display: "table" }}>
+            <div className="card-heading"
+                style={{ display: "table-cell", width: "50%", padding: "57px 65px 65px 65px" }}>
+                <h6>Login</h6>
+                <Form onSubmit={this.handleLogin}>
+                    <FormGroup>
+                        <Label htmlFor="username">Email</Label>
+                        <Input type="text" id="username" name="username" innerRef={(input)=> this.username = input} />
+                    </FormGroup>
+                    <FormGroup>
+                        <Label htmlFor="password">password</Label>
+                        <Input type="password" id="password" name="password" innerRef={(input)=> this.password = input}
+                        />
+                    </FormGroup>
+                    <Button type="Submit" value="submit" color="primary">
+                        Login
+                    </Button>
+                </Form>
+            </div>
+            <div className="card-body" style={{ padding: "57px 65px 65px 65px" }}>
+                <h6>SignUp</h6>
+                <Form>
+                    <FormGroup>
+                        <Label htmlFor="name">name</Label>
+                        <Input type="text" id="name" name="name" innerRef={(input)=> this.name = input} />
+                    </FormGroup>
+                    <FormGroup>
+                        <Label htmlFor="username">Email</Label>
+                        <Input type="text" id="username" name="username" innerRef={(input)=> this.username = input} />
+                    </FormGroup>
+                    <FormGroup>
+                        <Label htmlFor="password">password</Label>
+                        <Input type="password" id="password" name="password" innerRef={(input)=> this.password = input}
+                        />
+                    </FormGroup>
+                    <Button type="Submit" value="submit" color="primary">
+                        SignUp
+                    </Button>
+                </Form>
+            </div>
+        </div>
+    </div>
+</div>

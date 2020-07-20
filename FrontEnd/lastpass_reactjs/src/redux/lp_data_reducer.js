@@ -15,6 +15,9 @@ export const Lp_Data_reducer = (state = initialState, action) => {
 
         case actionTypes.PASSDATA_FAILED:
             return { ...state, isLoading: false, errMess: action.payload, lp_data: [] }
+        // case actionTypes.UPDATE_PASSDATA:
+        //     var passData = action.payload
+        //     return { ...state, isLoading: false, errMess: null, lp_data: state.lp_data.concat(passData)}
         default:
             return state;
     }

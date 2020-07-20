@@ -47,7 +47,6 @@ export const authLogin = (username, password) => (dispatch) => {
         password: password
 
     }).then(response => {
-        console.log(">>>>>>>", response.data)
         const token = response.data.token;
         const name = response.data.name
         const expirationDate = new Date(new Date().getTime() + 3600 * 1000); // 1 hour
@@ -100,8 +99,10 @@ export const authCheckState = () => {
 
 /* lp_dataAction will be the ActionCreators for lp_data_reducer */
 
+//fetch all the data
 export const fetchLpData = () => (dispatch) => {
     dispatch(lpDataLoading());
+    console.log("<<<<<<<<< FETCH METHOD RAN >>>>>>>>")
     let getData = async () => {
         await axios.get('http://127.0.0.1:8000/lastpass_api/feed_clone/', {
             headers: {
@@ -115,27 +116,83 @@ export const fetchLpData = () => (dispatch) => {
     getData()
 }
 
+//Create operation
 export const createLpData = (name_of_website, url_of_website, username_for_website,
     password_for_website, notes) => (dispatch) => {
         let createData = async () => {
-            await axios.post('http://127.0.0.1:8000/lastpass_api/feed_clone/', {
+            let the_data = {
+                "name_of_website": name_of_website,
+                "url_of_website": url_of_website,
+                "username_for_website": username_for_website,
+                "password_for_website": password_for_website,
+                "notes": notes
+            }
+            await axios.post('http://127.0.0.1:8000/lastpass_api/feed_clone/', the_data, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Token ${localStorage.getItem('token')}`
-                },
-                body: {
-                    "name_of_website": name_of_website,
-                    "url_of_website": url_of_website,
-                    "username_for_website": username_for_website,
-                    "password_for_website": password_for_website,
-                    "notes": notes
                 }
-            }).then(response => dispatch(add_lpData(response.data)))
+            }).then(response => {
+                console.log("The response", response.data)
+                dispatch(fetchLpData())
+            })// .then(dispatch(fetchLpData()))
+                .catch(error => dispatch(lpDataFailed(error.message)))
         }
         createData()
     }
+//Update operation
+export const updateLpData = (id, name_of_website, url_of_website, username_for_website,
+    password_for_website, notes) => (dispatch) => {
+        console.log("The data that came in", id, name_of_website, url_of_website, username_for_website,
+            password_for_website, notes)
+        if (id !== null && id !== undefined) {
+            dispatch(lpDataLoading());
+            console.log("RAN inside update actionCreator")
+            console.log("the token", localStorage.getItem('token'))
+            let the_data = {
+                "name_of_website": name_of_website,
+                "url_of_website": url_of_website,
+                "username_for_website": username_for_website,
+                "password_for_website": password_for_website,
+                "notes": notes
+            }
+            let updateData = async () => {
+                await axios.patch(`http://127.0.0.1:8000/lastpass_api/feed_clone/${id}/`, the_data, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Token ${localStorage.getItem('token')}`
+                    }
+                }).then(response => {
+                    console.log("The response ------->", response)
+                    dispatch(fetchLpData())
+                }).catch(error => {
+                    dispatch(lpDataFailed(error.message))
+                })
+            }
+            updateData()
+            setTimeout(function () { alert("check the status at server") }, 5000)
+        } else {
+            dispatch(lpDataFailed("_______The data passed was incorrect_______"))
+        }
 
-// export const 
+    }
+
+//Delete operation
+export const deleteLpData = (id) => (dispatch) => {
+    dispatch(lpDataLoading())
+    let deleteData = async () => await axios.delete(`http://127.0.0.1:8000/lastpass_api/feed_clone/${id}/`, {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Token ${localStorage.getItem('token')}`
+        }
+    }).then(response => {
+        console.log("The response ------->", response)
+        dispatch(fetchLpData())
+    }).catch(error => {
+        dispatch(lpDataFailed(error.message))
+    })
+    deleteData()
+}
 
 export const lpDataLoading = () => {
     return {
