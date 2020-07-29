@@ -9,7 +9,7 @@ import { Lp_Data_reducer } from './lp_data_reducer'
 const persistConfig = {
     key: 'root',
     storage,
-    whitelist: ['auth', 'lp_data']
+    whitelist: ['auth',] //'lp_data'
 }
 
 const rootReducer = combineReducers({

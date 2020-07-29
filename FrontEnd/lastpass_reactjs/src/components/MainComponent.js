@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import Header from './HeaderComponent'
 import PasswordData from './PasswordData'
 import LpDetail from './PassDetailComponent'
-import { updateLpData } from '../redux/ActionCreators'
+import { updateLpData, fetchLpData } from '../redux/ActionCreators'
 
 /*
     Whenever the props changes the actionCreators 
@@ -15,6 +15,12 @@ import { updateLpData } from '../redux/ActionCreators'
 */
 
 class Main extends Component {
+    componentDidMount() {
+        if (this.props.auth.token !== null && this.props.auth.token !== undefined) {
+            console.log("The prop value exist right now", this.props)
+            this.props.fetchLpData();
+        }
+    }
     componentDidUpdate() {
         console.log("<componentDidUpdate> inside MainComponent ")
         if (this.props.auth.token !== null && this.props.auth.token !== undefined) {
@@ -86,5 +92,6 @@ const mapDispatchToProps = dispatch => ({
     //     dispatch(updateLpData(id, name_of_website, url_of_website, username_for_website,
     //         password_for_website, notes))
     // },
+    fetchLpData: () => dispatch(fetchLpData())
 })
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Main));
