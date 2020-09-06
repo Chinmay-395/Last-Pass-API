@@ -25,7 +25,7 @@ function RenderMenuItem({ item }) {
 }
 
 const PasswordData = (props) => {
-  const [toggled, toggle] = useState(false);
+  const [toggled, setToggle] = useState(false);
   console.log("Props inside PasswordData-Component", props);
   if (props.auth.token !== null) {
     console.log(
@@ -79,8 +79,18 @@ const PasswordData = (props) => {
           <div className="row">{fetchPassData}</div>
           <br />
           <div>
-            <svg onClick={() => toggle(toggled => !toggled)} width="3em" height="3em" viewBox="0 0 16 16" className="bi bi-plus-circle-fill" fill="blue" xmlns="http://www.w3.org/2000/svg">
-              <path fillRule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4a.5.5 0 0 0-1 0v3.5H4a.5.5 0 0 0 0 1h3.5V12a.5.5 0 0 0 1 0V8.5H12a.5.5 0 0 0 0-1H8.5V4z" />
+            <svg
+              onClick={() => setToggle(toggled => !toggled)}
+              width="3em"
+              height="3em"
+              viewBox="0 0 16 16"
+              className="bi bi-plus-circle-fill"
+              fill="blue" xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fillRule="evenodd"
+                d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4a.5.5 0 0 0-1 0v3.5H4a.5.5 0 0 0 0 1h3.5V12a.5.5 0 0 0 1 0V8.5H12a.5.5 0 0 0 0-1H8.5V4z"
+              />
             </svg>
             {/* The Form */}
             <div >
