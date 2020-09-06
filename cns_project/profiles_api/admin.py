@@ -4,8 +4,11 @@ from .models import UserProfile, ProfileFeedItem
 
 
 class UserProfileAdmin(admin.ModelAdmin):
-    list_display = ("name", "email", "is_staff", "check_If_User_IsActive")
+    list_display = ("id", "name", "email", "is_staff",
+                    "check_If_User_IsActive")
     search_fields = ("name",)
+    list_display_links = ("name",)
+    list_filter = ("is_staff", "is_active")
 
     def check_If_User_IsActive(self, obj):
         return obj.is_active

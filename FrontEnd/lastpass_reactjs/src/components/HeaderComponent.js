@@ -7,7 +7,7 @@ import {
     ModalBody, Form, FormGroup, Label, Input, //Card
 } from 'reactstrap';
 import { NavLink } from 'react-router-dom'
-import MainIcon from '../shared/lastpass-icon.svg'
+import MainIcon from '../../shared/lastpass-icon.svg'
 
 class Header extends Component {
     constructor(props) {
@@ -145,12 +145,6 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = dispatch => ({
-    // updateLpData: (id, name_of_website, url_of_website, username_for_website,
-    //     password_for_website, notes) => {
-    //     dispatch(updateLpData(id, name_of_website, url_of_website, username_for_website,
-    //         password_for_website, notes))
-    // },
-    // fetchLpData: () => { dispatch(fetchLpData()) },
     authLogin: (username, password) => {
         dispatch(authLogin(username, password))
     },

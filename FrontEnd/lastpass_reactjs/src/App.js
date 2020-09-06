@@ -12,10 +12,9 @@ import { configureStore } from './redux/configureStore'
 // import {}
 
 
-
-console.log("********The ConfiguredStore********", configureStore())
-console.log("********The Store********", configureStore().store)
-console.log("********The persistor********", configureStore().persistor)
+// console.log("********The ConfiguredStore********", configureStore())
+// console.log("********The Store********", configureStore().store)
+// console.log("********The persistor********", configureStore().persistor)
 const store = configureStore().store;
 const persistor = configureStore().persistor
 
