@@ -1,212 +1,26 @@
-import re
+import base64
+import os
+from cryptography.fernet import Fernet
+from cryptography.hazmat.primitives import hashes
+from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
+from cryptography.hazmat.backends import default_backend
+backend = default_backend()
+password = input("Enter your password ")  # b"password"
+email = input("Enter your email ")
+password = bytes(password, "utf8")
+salt = os.urandom(16)
+kdf = PBKDF2HMAC(
+    algorithm=hashes.SHA256(),
+    length=32,
+    salt=salt,
+    iterations=100000,
+    backend=backend
+)
+key = base64.urlsafe_b64encode(kdf.derive(password))
+print("The KEY ", key)
+f = Fernet(key)
+token = f.encrypt(b"Secret message!")
+print("THE TOKEN ", token)
 
-
-def cipher_encryption(input_text):
-    msg = input_text  # input("Enter message: ")
-    rails = 3  # int(input("Enter number of rails: "))
-
-    # removing white space from message
-    msg = msg.replace(" ", "")
-
-    # creating an empty matrix
-    railMatrix = []
-    for i in range(rails):
-        railMatrix.append([])
-    for row in range(rails):
-        for column in range(len(msg)):
-            railMatrix[row].append('.')
-        # inner for
-    # for
-
-    # testing the matrix
-    # for row in railMatrix:
-    #     for column in row:
-    #         print(column, end="")
-    #     print("\n")
-    #     # inner for
-    # # for
-
-    # putting letters of message one by one in the matrix in zig-zag
-    row = 0
-    check = 0
-    for i in range(len(msg)):
-        if check == 0:
-            railMatrix[row][i] = msg[i]
-            row += 1
-            if row == rails:
-                check = 1
-                row -= 1
-            # inner if
-        elif check == 1:
-            row -= 1
-            railMatrix[row][i] = msg[i]
-            if row == 0:
-                check = 0
-                row = 1
-            # inner if
-        # if-else
-
-    # testing the matrix with message in zig-zag
-    # for row in railMatrix:
-    #     for column in row:
-    #         print(column, end="")
-    #     print("\n")
-    #     # inner for
-    # # for
-
-    encryp_text = ""
-    for i in range(rails):
-        for j in range(len(msg)):
-            encryp_text += railMatrix[i][j]
-    # for
-
-    # removing '.' from encrypted text
-    encryp_text = re.sub(r"\.", "", encryp_text)
-    print("Encrypted Text: {}".format(encryp_text))
-    return encryp_text
-
-
-def cipher_decryption(text):
-    msg = text  # input("Enter message: ")
-    rails = 3  # int(input("Enter number of rails: "))
-
-    # removing white space from message
-    msg = msg.replace(" ", "")
-
-    # creating an empty matrix
-    railMatrix = []
-    for i in range(rails):
-        railMatrix.append([])
-    for row in range(rails):
-        for column in range(len(msg)):
-            railMatrix[row].append('.')
-        # inner for
-    # for
-
-    # testing the matrix
-    # for row in railMatrix:
-    #     for column in row:
-    #         print(column, end="")
-    #     print("\n")
-    #     # inner for
-    # # for
-
-    # putting letters of message one by one in the matrix in zig-zag
-    row = 0
-    check = 0
-    for i in range(len(msg)):
-        if check == 0:
-            railMatrix[row][i] = msg[i]
-            row += 1
-            if row == rails:
-                check = 1
-                row -= 1
-                # inner if
-        elif check == 1:
-            row -= 1
-            railMatrix[row][i] = msg[i]
-            if row == 0:
-                check = 0
-                row = 1
-            # inner if
-        # if-else
-
-    # testing the matrix with message in zig-zag
-    # for row in railMatrix:
-    #     for column in row:
-    #         print(column, end="")
-    #     print("\n")
-    #     # inner for
-    # # for
-
-    # reordering the matrix
-    ordr = 0
-    for i in range(rails):
-        for j in range(len(msg)):
-            temp = railMatrix[i][j]
-            if re.search("\\.", temp):
-                # skipping '.'
-                continue
-            else:
-                railMatrix[i][j] = msg[ordr]
-                ordr += 1
-            # if-else
-        # inner for
-    # for
-
-    # testing matrix reorder
-    for i in railMatrix:
-        for column in i:
-            print(column, end="")
-        # inner for
-        print("\n")
-    # for
-
-    # putting reordered matrix into decrypted text string to get decrypted text
-    check = 0
-    row = 0
-    decryp_text = ""
-    for i in range(len(msg)):
-        if check == 0:
-            decryp_text += railMatrix[row][i]
-            row += 1
-            if row == rails:
-                check = 1
-                row -= 1
-            # inner if
-        elif check == 1:
-            row -= 1
-            decryp_text += railMatrix[row][i]
-            if row == 0:
-                check = 0
-                row = 1
-            # inner if
-        # if-else
-    # for
-
-    decryp_text = re.sub(r"\.", "", decryp_text)
-    print("Decrypted Text: {}".format(decryp_text))
-    return decryp_text
-
-
-def main():
-    choice = int(input("1. Encryption\n2. Decryption\nChoose(1,2): "))
-    if choice == 1:
-        print("---Encryption---")
-        msg = input("Enter message: ")
-        ''' the number of rails is static because I dont know how to create a serializer wherein 
-            if the user selects railFence method then it should comeup with new field for
-            number of rails which will take in this input
-        '''
-        #rails = int(input("Enter number of rails: "))
-        cipher_encryption(msg)
-    elif choice == 2:
-        print("---Decryption---")
-        msg = input("Enter message: ")
-        ''' the number of rails is static because I dont know how to create a serializer wherein 
-            if the user selects railFence method then it should comeup with new field for
-            number of rails which will take in this input
-        '''
-        #rails = int(input("Enter number of rails: "))
-        cipher_decryption(msg)
-    else:
-        print("Invalid Choice")
-
-
-def called_RF_InfromDjango(choice, text, key):
-    if choice == 'ENCRYPTION':
-        print("---Encryption---")
-        ciphered_text = cipher_encryption(text)
-        return ciphered_text
-    elif choice == 'DECRYPTION':
-        print("---Decryption---")
-        deciphered_text = cipher_decryption(text)
-        return deciphered_text
-    else:
-        return f'Invalid inputs or something went wrong'
-
-
-if __name__ == "__main__":
-    main()
-# else:
-#     calledInfromDjango(choice, text)
+print("THE DECRYPTED DATA ", f.decrypt(token))
+# b'Secret message!'

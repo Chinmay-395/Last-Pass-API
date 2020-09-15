@@ -1,9 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { updateLpData, deleteLpData } from "../redux/ActionCreators";
 import { Redirect } from 'react-router-dom'
 import { bindActionCreators } from "redux";
+//BootStrap imports
 import { Card, CardTitle, CardBody, CardText, Modal, Button, ModalHeader, ModalBody, Form, FormGroup, Label, Input, } from "reactstrap";
+// custom imports
+import { updateLpData, deleteLpData } from "../redux/ActionCreators";
 
 function RenderLpItem({ x, y, item }) {
   return (
@@ -45,12 +47,12 @@ class LpDetail extends Component {
     console.log(e);
     this.toggleUpdateModal();
   }
-  componentDidMount() {
-    console.log("componentDidMount from LPdetail");
-  }
-  componentDidUpdate() {
-    console.log("componentDidUpdate from LPdetail");
-  }
+  // componentDidMount() {
+  //   console.log("componentDidMount from LPdetail");
+  // }
+  // componentDidUpdate() {
+  //   console.log("componentDidUpdate from LPdetail");
+  // }
   toggleUpdateModal() {
     this.setState({
       isModalOpen: !this.state.isModalOpen,
@@ -97,7 +99,11 @@ class LpDetail extends Component {
           <div className="container">
             <div className="row">
               <div className="col-sm">
-                <RenderLpItem x={this.handleUpdate} y={this.handleDeleteData} item={this.props.lp_data} />
+                <RenderLpItem
+                  x={this.handleUpdate}
+                  y={this.handleDeleteData}
+                  item={this.props.lp_data}
+                />
               </div>
             </div>
             <React.Fragment>
@@ -143,7 +149,7 @@ class LpDetail extends Component {
                     <FormGroup>
                       <Label htmlFor="password">Password</Label>
                       <Input
-                        type="password"
+                        type="text"
                         id="password_for_website"
                         name="password_for_website"
                         placeholder={this.props.lp_data.password_for_website}

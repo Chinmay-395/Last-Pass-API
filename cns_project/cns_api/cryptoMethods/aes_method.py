@@ -9,7 +9,7 @@ import io
 #import inputScript
 bufferSize = 64 * 1024
 password = "foopassword"
-
+# entry = input("Enter your value: ")
 # print(inputScript.c)
 # entry = inputScript.c  # input("The text:\t")
 
@@ -29,17 +29,17 @@ def EncryptFunc(entry):
     fIn = io.BytesIO(pbdata)
     pyAesCrypt.encryptStream(fIn, fCiph, password, bufferSize)
     # print encrypted data
-    #print("This is the ciphertext:\n" + str(fCiph.getvalue()))
-    return str(fCiph.getvalue())
+    print("This is the ciphertext:\n" + str(fCiph.getvalue()))
+    return fCiph.getvalue()
 
 
 # calling the encryption function do this inside tkinter button
 # EncryptFunc(entry)
 
 
-def DecryptFunc():
+def DecryptFunc(input):
     # get ciphertext length
-    ctlen = len(fCiph.getvalue())
+    ctlen = len(input)  # len(fCiph.getvalue())
     print(ctlen)
     # go back to the start of the ciphertext stream
     fCiph.seek(0)
@@ -55,3 +55,13 @@ def DecryptFunc():
 
 # calling DecryptFunc
 # DecryptFunc()
+
+def main():
+    entry = input("Enter your value: ")
+    encrypted_text = EncryptFunc(entry)
+    print("___________", encrypted_text)
+    decrypted_text = DecryptFunc(encrypted_text)
+    print("________", str(decrypted_text))
+
+
+main()

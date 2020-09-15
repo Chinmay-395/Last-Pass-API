@@ -42,7 +42,9 @@ class UserDetailSerializer(serializers.ModelSerializer):
         model = models.UserProfile
         fields = [
             'name',
-            'email'
+            'email',
+            'password'
         ]
         extra_kwargs = {'name': {'read_only': True},
-                        'email': {'read_only': True}}
+                        'email': {'read_only': True},
+                        'password': {'read_only': True}}

@@ -2,7 +2,8 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import (status, viewsets)
-from rest_framework.authentication import TokenAuthentication
+from rest_framework.authentication import (TokenAuthentication,
+                                           SessionAuthentication)
 from rest_framework import filters
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.settings import api_settings
@@ -19,7 +20,7 @@ from profiles_api import serializers, models, permissions
 class UserProfileViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.UserProfileSerializer
     queryset = models.UserProfile.objects.all()
-    authentication_classes = (TokenAuthentication,)
+    authentication_classes = (SessionAuthentication, TokenAuthentication)
     permission_classes = (permissions.UpdateOwnProfile,)
     filter_backends = (filters.SearchFilter,)
     search_fields = ('name', 'email',)
@@ -45,7 +46,7 @@ class UserLoginApiView(ObtainAuthToken):
 
 
 class UserProfileFeedViewSet(viewsets.ModelViewSet):
-    authentication_classes = (TokenAuthentication,)
+    authentication_classes = (TokenAuthentication, SessionAuthentication)
     serializer_class = serializers.ProfileFeedItemSerializer
     queryset = models.ProfileFeedItem.objects.all()
     permission_classes = (
@@ -58,12 +59,17 @@ class UserProfileFeedViewSet(viewsets.ModelViewSet):
 
 
 class UserDetailViewSet(viewsets.ModelViewSet):
-    authentication_classes = (TokenAuthentication,)
+    authentication_classes = (TokenAuthentication, SessionAuthentication)
     serializer_class = serializers.UserDetailSerializer
+    SAFE_METHODS = ['GET', ]
 
     def get_queryset(self):
         print("userId ", self.request.user.id)
         print("userName ", self.request.user)
+        print("The password ", self.request.user.password)
+        print("The password type is \n", type(self.request.user.password))
+        print("The password in bytes is \n", bytes(
+            self.request.user.password, "utf8"))
         # print("userEmail ", self.request.user.email)
         queryset = models.UserProfile.objects.filter(
             name=self.request.user)

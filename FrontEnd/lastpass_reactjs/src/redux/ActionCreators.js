@@ -141,8 +141,8 @@ export const createLpData = (name_of_website, url_of_website, username_for_websi
         createData()
     }
 //Update operation
-export const updateLpData = (id, name_of_website, url_of_website, username_for_website,
-    password_for_website, notes) => (dispatch) => {
+export const updateLpData = (id, name_of_website = "", url_of_website = "", username_for_website = "",
+    password_for_website = "", notes = "") => (dispatch) => {
         console.log("The data that came in", id, name_of_website, url_of_website, username_for_website,
             password_for_website, notes)
         if (id !== null && id !== undefined) {

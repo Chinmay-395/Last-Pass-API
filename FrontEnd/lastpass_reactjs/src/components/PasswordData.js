@@ -40,12 +40,15 @@ const PasswordData = (props) => {
       );
     });
     if (props.lp_data.isLoading) {
+
       return (
         <div className="container">
           <div className="row">
             <h3>Loading</h3>
             <Spin indicator={antIcon} />
+            {setTimeout(() => { alert("After 10 seconds") }, 100000000)}
           </div>
+
         </div>
       );
     } else if (props.lp_data.errMess) {
@@ -85,9 +88,7 @@ const PasswordData = (props) => {
             {/* The Form */}
             <div >
               {toggled &&
-
                 <>
-
                   <ModalForm newToggle={toggled} />
                 </>
               }
