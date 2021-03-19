@@ -4,7 +4,7 @@ cffi==1.14.0
 colorama==0.4.3
 cryptography==2.9.2
 Django==2.2
-djangorestframework==3.9.2
+djangorestframework==3.11.2
 isort==4.3.21
 lazy-object-proxy==1.4.3
 mccabe==0.6.1
